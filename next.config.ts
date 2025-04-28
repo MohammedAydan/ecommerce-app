@@ -6,8 +6,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "picsum.photos",
+        hostname: "https://e-commerce-api-mag.runasp.net",
       },
+      {
+        protocol: "http",
+        hostname: "https://e-commerce-api-mag.runasp.net",
+      }, 
       {
         protocol: "http",
         hostname: "localhost",
