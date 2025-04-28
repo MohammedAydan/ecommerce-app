@@ -6,11 +6,11 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "https://e-commerce-api-mag.runasp.net",
+        hostname: "e-commerce-api-mag.runasp.net",
       },
       {
         protocol: "http",
-        hostname: "https://e-commerce-api-mag.runasp.net",
+        hostname: "e-commerce-api-mag.runasp.net",
       }, 
       {
         protocol: "http",
