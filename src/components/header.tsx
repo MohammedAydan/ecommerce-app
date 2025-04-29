@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaRegHeart } from "react-icons/fa";
+// import { FaRegHeart } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
 import { ModeToggle } from "./mode-toggle";
 import { Button } from "./ui/button";
@@ -26,9 +26,9 @@ const Header = () => {
                                 <IoSearch className="w-5 h-5" />
                             </Button>
                         </Link>
-                        <Button size={"icon"} variant={"outline"}>
+                        {/* <Button size={"icon"} variant={"outline"}>
                             <FaRegHeart className="w-5 h-5" />
-                        </Button>
+                        </Button> */}
                         <CartButton />
                         <div className="">
                             <ModeToggle />

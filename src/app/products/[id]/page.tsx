@@ -1,5 +1,5 @@
 import React from 'react'
-import { Heart, Star } from 'lucide-react'
+import { Star } from 'lucide-react'
 import ImageSlider from '@/components/image-slider'
 import AddToCartButton from '@/components/add-to-cart-button'
 import { notFound } from 'next/navigation'
@@ -7,6 +7,7 @@ import { Metadata } from 'next'
 import ProductCard from '@/components/product-card'
 import { Separator } from '@/components/ui/separator';
 import { getProduct, getCategoryAndProducts } from '@/lib/data/products';
+// import { FaRegHeart } from 'react-icons/fa'
 // import AddToCartButton from './components/AddToCartButton'
 // import WishlistButton from './components/WishlistButton'
 
@@ -85,7 +86,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                             className="p-3 border border-input rounded-lg hover:bg-accent transition-colors"
                             aria-label="Add to wishlist"
                         >
-                            <Heart className="w-5 h-5" />
+                            {/* <FaRegHeart className="w-5 h-5" /> */}
                         </button>
                     </div>
 
