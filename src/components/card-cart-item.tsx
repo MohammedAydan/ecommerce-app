@@ -28,22 +28,21 @@ const CardCartItem = ({ item }: { item: CartItemType }) => {
     return (
         <div
             key={item.cartItemId}
-            className="flex items-center justify-between py-4 border-b last:border-none"
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-4 border-b last:border-none space-y-4 sm:space-y-0"
         >
-            <div className="flex items-center gap-4">
-                <div className="h-16 w-16 overflow-hidden rounded-md">
+            <div className="flex items-start sm:items-center gap-4 w-full sm:w-auto">
+                <div className="h-20 w-20 sm:h-16 sm:w-16 overflow-hidden rounded-md flex-shrink-0">
                     <Image
                         src={item.product?.imageUrl ?? ""}
                         alt={item.product?.productName ?? "Product Image"}
-                        width={64}
-                        height={64}
+                        width={80}
+                        height={80}
                         className="object-cover h-full w-full"
                     />
                 </div>
-                <div className="flex flex-col">
-                    <p className="font-medium">{item.product?.productName}</p>
-                    {/* <p className="text-sm text-gray-500">${item.product?.salePrice?.toFixed(2)}</p> */}
-                    <div className="flex items-center justify-start gap-2">
+                <div className="flex flex-col flex-grow">
+                    <p className="font-medium text-sm sm:text-base line-clamp-2">{item.product?.productName}</p>
+                    <div className="flex items-center justify-start gap-2 mt-1">
                         <span className="text-base font-bold text-primary">${item.product?.salePrice ? item.product.salePrice.toFixed(2) : (item.product?.price ? item.product.price.toFixed(2) : '0.00')}</span>
                         {item.product?.salePrice && item.product?.price && item.product?.salePrice < item.product?.price && (
                             <span className="text-sm text-muted-foreground line-through">${item.product?.price.toFixed(2)}</span>
@@ -51,23 +50,27 @@ const CardCartItem = ({ item }: { item: CartItemType }) => {
                     </div>
                 </div>
             </div>
-            <div className="flex items-center gap-4">
-                <Input
-                    type="number"
-                    value={item.quantity ?? 1}
-                    min={1}
-                    className="w-20"
-                    readOnly
-                />
-                <Button disabled={isLoading} onClick={decrementCartItemHandler} variant="outline" size="icon" className="cursor-pointer">
-                    <IoRemove />
-                </Button>
-                <Button disabled={isLoading} onClick={incrementCartItemHandler} variant="outline" size="icon" className="cursor-pointer">
-                    <IoIosAdd />
-                </Button>
-                <Button disabled={isLoading} onClick={removeCartItemHandler} variant="destructive" size="sm" className="cursor-pointer">
-                    Remove
-                </Button>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:w-auto justify-between">
+                <div className="flex items-center gap-2 justify-between md:justify-end w-full">
+                    <div className="flex items-center gap-2">
+                        <Button disabled={isLoading} onClick={decrementCartItemHandler} variant="outline" size="icon" className="h-8 w-8">
+                            <IoRemove className="h-4 w-4" />
+                        </Button>
+                        <Input
+                            type="number"
+                            value={item.quantity ?? 1}
+                            min={1}
+                            className="w-16 h-8 text-center"
+                            readOnly
+                        />
+                        <Button disabled={isLoading} onClick={incrementCartItemHandler} variant="outline" size="icon" className="h-8 w-8">
+                            <IoIosAdd className="h-4 w-4" />
+                        </Button>
+                    </div>
+                    <Button disabled={isLoading} onClick={removeCartItemHandler} variant="destructive" size="sm" className="w-auto">
+                        Remove
+                    </Button>
+                </div>
             </div>
         </div>
     )

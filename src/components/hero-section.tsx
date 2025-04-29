@@ -17,7 +17,7 @@ export default function HeroSection({
     backgroundImage = "/images/bg.jpg"
 }: HeroSectionProps) {
     return (
-        <section className="relative w-full h-screen bg-background overflow-hidden">
+        <section className="relative w-full h-[60vh] bg-background overflow-hidden mt-16">
             <div className="absolute inset-0">
                 <Image
                     src={backgroundImage}
@@ -32,7 +32,7 @@ export default function HeroSection({
             </div>
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                 <div className="flex flex-col justify-center items-center h-full space-y-8">
-                    <h1 className="text-4xl md:text-6xl font-bold text-center text-white">
+                    <h1 className="text-3xl md:text-5xl font-bold text-center text-white">
                         {title}
                     </h1>
                     <p className="text-lg md:text-xl text-center text-gray-100 max-w-2xl">

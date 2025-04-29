@@ -20,7 +20,7 @@ const Header = () => {
                     </div>
 
                     {/* Right side icons */}
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-1 sm:space-x-4">
                         <Link href="/search">
                             <Button size={"icon"} variant={"outline"}>
                                 <IoSearch className="w-5 h-5" />

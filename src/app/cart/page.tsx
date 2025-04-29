@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
@@ -10,21 +9,18 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import { Label } from "@/components/ui/label"
-import { Badge } from '@/components/ui/badge'
-import { MdDelete } from "react-icons/md";
 import { useCart } from '@/features/cart/use-cart'
 import CardCartItem from '@/components/card-cart-item'
 import { CheckoutDialog } from '@/components/checkout-dialog'
+import CardDiscount from '@/components/card-discount'
 
 const CartPage = () => {
     const { subtotal, shipping, total, cart, getItemsCount, isLoading, loadCart } = useCart();
 
     return (
         <div className="container mx-auto py-16">
-            <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
+            <h1 className="text-3xl font-bold mb-8 p-3">Shopping Cart</h1>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Cart Items */}
@@ -48,29 +44,9 @@ const CartPage = () => {
                 </div>
 
                 {/* Order Summary */}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col">
                     {/* Coupon Card */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Coupon</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <Label htmlFor="coupon-input">Enter coupon code</Label>
-                            <Input id="coupon-input" placeholder="Coupon code" />
-                            <Separator />
-                            <div className="flex justify-between font-bold bg-primary/10 p-2 rounded-lg">
-                                <div className="flex justify-between items-center gap-3">
-                                    <Badge variant={"destructive"}><MdDelete /> Remove</Badge>
-                                    <span className="line-through">coupon10</span>
-
-                                </div>
-                                <span className='text-green-600'>-${total().toFixed(2)}</span>
-                            </div>
-                        </CardContent>
-                        <CardFooter>
-                            <Button disabled={isLoading} className="w-full">Apply Coupon</Button>
-                        </CardFooter>
-                    </Card>
+                    <CardDiscount />
 
                     {/* Order Total Card */}
                     <Card>
