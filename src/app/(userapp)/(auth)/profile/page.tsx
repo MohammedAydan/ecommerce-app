@@ -120,7 +120,7 @@ function Page() {
                         </div>
 
                     </div>
-                    <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
+                    <div className="w-full flex flex-col sm:flex-row items-center gap-4 mt-8">
                         <Button 
                             onClick={signOutHandle} 
                             variant="destructive" 
