@@ -8,7 +8,7 @@ import apiClient from "@/lib/api";
 import Loading from "@/components/loading";
 import { MdArrowBack } from "react-icons/md";
 import OrderType from "@/types/order-type";
-import { OrderItemCard } from "../../../components/order-item-card";
+import { OrderItemCard } from "../../../../components/order-item-card";
 
 export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();

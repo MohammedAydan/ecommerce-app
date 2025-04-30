@@ -1,11 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import ClientCartProvider from "@/features/cart/cart-provider";
-import ClientAuthProvider from "@/features/auth/auth-provider";
-import { Toaster } from "sonner";
-
+import Header from "@/components/header";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -37,23 +32,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* theme provider */}
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {/* auth provider */}
-          <ClientAuthProvider>
-            {/* cart provider */}
-            <ClientCartProvider>
-              {/* my app pages */}
-              {children}
-            </ClientCartProvider>
-          </ClientAuthProvider>
-        </ThemeProvider>
-        <Toaster />
+        {/* header */}
+        <Header />
+        {/* my app pages */}
+        {children}
       </body>
     </html>
   );
