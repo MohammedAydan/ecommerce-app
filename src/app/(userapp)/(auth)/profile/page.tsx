@@ -120,9 +120,25 @@ function Page() {
                         </div>
 
                     </div>
-                    <Button onClick={signOutHandle} variant="destructive" className="w-full px-4 py-2">
-                        Sign Out
-                    </Button>
+                    <div className="flex flex-col sm:flex-row items-center gap-4 mt-8">
+                        <Button 
+                            onClick={signOutHandle} 
+                            variant="destructive" 
+                            className="w-full px-6 py-2.5 transition-all duration-200 hover:bg-red-600 hover:scale-[1.02]"
+                        >
+                            Sign Out
+                        </Button>
+                        {user?.roles?.map((r) => r.toLowerCase()).includes("admin") && (
+                            <Link href={"/admin"} className="w-full">
+                                <Button 
+                                    variant="default" 
+                                    className="w-full px-6 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all duration-200 hover:scale-[1.02]"
+                                >
+                                    Dashboard
+                                </Button>
+                            </Link>
+                        )}
+                    </div>
                 </CardContent>
             </Card>
         </div>

@@ -82,12 +82,12 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
                     <div className="flex gap-4">
                         <AddToCartButton product={product} />
-                        <button
+                        {/* <button
                             className="p-3 border border-input rounded-lg hover:bg-accent transition-colors"
                             aria-label="Add to wishlist"
-                        >
+                        > */}
                             {/* <FaRegHeart className="w-5 h-5" /> */}
-                        </button>
+                        {/* </button> */}
                     </div>
 
                     {/* Additional Details */}
