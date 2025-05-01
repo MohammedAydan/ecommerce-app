@@ -21,7 +21,7 @@
 
 import { ProductDtoType } from "./product-type"
 
-export interface CategoryBtoType {
+export interface CategoryDtoType {
     categoryId: number
     categoryName: string
     parentCategoryId: number
@@ -41,7 +41,7 @@ export interface CategoryAndMyProductsBtoType {
 }
 
 
-export default interface CategoryType extends CategoryBtoType {
+export default interface CategoryType extends CategoryDtoType {
     products: ProductDtoType[]
 }
 

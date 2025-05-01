@@ -57,20 +57,21 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
     }
 
     // Map status to appropriate badge variant
-    const getStatusVariant = (status: string) => {
+    const getStatusBadgeVariant = (status: string) => {
         switch (status.toLowerCase()) {
             case 'completed':
-                return 'success';
+                return 'default';
             case 'processing':
-                return 'warning';
+                return 'secondary';
             case 'cancelled':
                 return 'destructive';
-            case 'pending':
-                return 'secondary';
+            case 'shipped':
+                return 'outline';
             default:
                 return 'outline';
         }
     };
+
 
     return (
         <div className="mt-16 w-full max-w-6xl mx-auto">
@@ -115,7 +116,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                 <div className="p-6">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="font-bold text-xl">Order #{order.id}</h2>
-                        <Badge variant={getStatusVariant(order.status) as "destructive" | "secondary" | "outline" | "default"} className="text-sm px-3 py-1">
+                        <Badge variant={getStatusBadgeVariant(order.status)} className="text-sm px-3 py-1">
                             {order.status}
                         </Badge>
                     </div>

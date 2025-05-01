@@ -9,7 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useGetTableData } from "../../_hooks/get-table-data-hook";
-import { CategoryBtoType } from "@/types/category-type";
+import { CategoryDtoType } from "@/types/category-type";
 import Image from "next/image";
 import { apiBaseUrl } from "@/app/utils/strings";
 import { Button } from "@/components/ui/button";
@@ -19,14 +19,21 @@ import {
     ChevronLeft,
     ChevronRight,
     Search,
-    Plus
+    Plus,
+    Pencil,
+    Trash2
 } from "lucide-react";
+import { CategoryForm } from "./_components/category-form";
+import { DeleteCategoryDialog } from "./_components/delete-category-dialog";
 import { Input } from "@/components/ui/input";
 
 const CategoriesPage = () => {
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState<CategoryDtoType | undefined>();
 
     const limit = 10;
 
@@ -39,8 +46,8 @@ const CategoriesPage = () => {
         return () => clearTimeout(timeout);
     }, [searchTerm]);
 
-    const { data, error, isLoading } = useGetTableData<CategoryBtoType>({
-        tableName: 'categories',
+    const { data, error, isLoading } = useGetTableData<CategoryDtoType>({
+        endpoint: 'categories',
         page,
         limit,
         searchTerm: debouncedSearch,
@@ -73,7 +80,13 @@ const CategoriesPage = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <Button className="whitespace-nowrap">
+                    <Button
+                        className="whitespace-nowrap"
+                        onClick={() => {
+                            setSelectedCategory(undefined);
+                            setIsFormOpen(true);
+                        }}
+                    >
                         <Plus className="h-4 w-4 mr-2" />
                         Add Category
                     </Button>
@@ -86,7 +99,7 @@ const CategoriesPage = () => {
                 </div>
             )}
 
-            <div className="border shadow-lg rounded-xl overflow-hidden">
+            <div className="border shadow-lg rounded-xl overflow-hidden p-1">
                 {isLoading ? (
                     <div className="p-4 space-y-4">
                         {[...Array(5)].map((_, i) => (
@@ -103,6 +116,7 @@ const CategoriesPage = () => {
                                 <TableHead className="hidden lg:table-cell">Description</TableHead>
                                 <TableHead>Image</TableHead>
                                 <TableHead>Items</TableHead>
+                                <TableHead>Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -132,6 +146,31 @@ const CategoriesPage = () => {
                                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                                             {category.itemsCount}
                                         </span>
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={() => {
+                                                    setSelectedCategory(category);
+                                                    setIsFormOpen(true);
+                                                }}
+                                            >
+                                                <Pencil className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="text-destructive hover:text-destructive"
+                                                onClick={() => {
+                                                    setSelectedCategory(category);
+                                                    setIsDeleteDialogOpen(true);
+                                                }}
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -163,6 +202,20 @@ const CategoriesPage = () => {
                     </div>
                 </div>
             </div>
+
+            <CategoryForm
+                category={selectedCategory}
+                open={isFormOpen}
+                onOpenChange={setIsFormOpen}
+            />
+
+            {selectedCategory && (
+                <DeleteCategoryDialog
+                    category={selectedCategory}
+                    open={isDeleteDialogOpen}
+                    onOpenChange={setIsDeleteDialogOpen}
+                />
+            )}
         </div>
     );
 };

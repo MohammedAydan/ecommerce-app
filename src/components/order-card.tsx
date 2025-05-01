@@ -12,16 +12,16 @@ interface OrderCardProps {
 
 const OrderCard = ({ order, formatDate, formatCurrency }: OrderCardProps) => {
     // Map status to appropriate badge variant
-    const getStatusVariant = (status: string) => {
-        switch(status.toLowerCase()) {
+    const getStatusBadgeVariant = (status: string) => {
+        switch (status.toLowerCase()) {
             case 'completed':
-                return 'success';
+                return 'default';
             case 'processing':
-                return 'warning';
+                return 'secondary';
             case 'cancelled':
                 return 'destructive';
-            case 'pending':
-                return 'secondary';
+            case 'shipped':
+                return 'outline';
             default:
                 return 'outline';
         }
@@ -31,7 +31,7 @@ const OrderCard = ({ order, formatDate, formatCurrency }: OrderCardProps) => {
         <Link href={`orders/${order.id}`} className="rounded-lg border p-6 shadow-sm hover:shadow-md transition-shadow">
             <div className="flex justify-between items-center">
                 <h2 className="font-bold text-lg">Order #{order.id}</h2>
-                <Badge variant={getStatusVariant(order.status) as "destructive" | "secondary" | "outline" | "default"}>
+                <Badge variant={getStatusBadgeVariant(order.status) as "destructive" | "secondary" | "outline" | "default"}>
                     {order.status}
                 </Badge>
             </div>

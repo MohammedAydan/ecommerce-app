@@ -12,3 +12,12 @@ export default interface OrderType {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface OrderDtoType {
+    id: string;
+    totalAmount: number;
+    paymentMethod: string;
+    shippingAddress: string;
+    shippingPrice: number;
+    status: string;
+}

@@ -19,14 +19,38 @@ import {
     ChevronLeft,
     ChevronRight,
     Search,
-    Plus
+    Plus,
+    Pencil,
+    Trash2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { ProductForm } from "./_components/product-form";
+import { DeleteProductDialog } from "./_components/delete-product-dialog";
 
 const ProductsPage = () => {
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState<ProductDtoType | undefined>();
+
+    // Add form and delete dialog components
+    const ProductFormDialog = (
+        <ProductForm
+            product={selectedProduct}
+            open={isFormOpen}
+            onOpenChange={setIsFormOpen}
+        />
+    );
+
+    const DeleteDialog = selectedProduct && (
+        <DeleteProductDialog
+            product={selectedProduct}
+            open={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+        />
+    );
 
     const limit = 10;
 
@@ -39,7 +63,7 @@ const ProductsPage = () => {
     }, [searchTerm]);
 
     const { data, error, isLoading } = useGetTableData<ProductDtoType>({
-        tableName: 'products',
+        endpoint: 'products',
         page,
         limit,
         searchTerm: debouncedSearch,
@@ -69,7 +93,13 @@ const ProductsPage = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <Button className="whitespace-nowrap">
+                    <Button
+                        className="whitespace-nowrap"
+                        onClick={() => {
+                            setSelectedProduct(undefined);
+                            setIsFormOpen(true);
+                        }}
+                    >
                         <Plus className="h-4 w-4 mr-2" />
                         Add Product
                     </Button>
@@ -82,7 +112,7 @@ const ProductsPage = () => {
                 </div>
             )}
 
-            <div className="border shadow-lg rounded-xl overflow-hidden">
+            <div className="border shadow-lg rounded-xl overflow-hidden p-1">
                 {isLoading ? (
                     <div className="p-4 space-y-4">
                         {[...Array(5)].map((_, i) => (
@@ -100,6 +130,7 @@ const ProductsPage = () => {
                                 <TableHead>Image</TableHead>
                                 <TableHead>Price</TableHead>
                                 <TableHead>Stock</TableHead>
+                                <TableHead>Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -138,6 +169,31 @@ const ProductsPage = () => {
                                             {product.stockQuantity}
                                         </span>
                                     </TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={() => {
+                                                    setSelectedProduct(product);
+                                                    setIsFormOpen(true);
+                                                }}
+                                            >
+                                                <Pencil className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="text-destructive hover:text-destructive"
+                                                onClick={() => {
+                                                    setSelectedProduct(product);
+                                                    setIsDeleteDialogOpen(true);
+                                                }}
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
@@ -168,6 +224,8 @@ const ProductsPage = () => {
                     </div>
                 </div>
             </div>
+            {ProductFormDialog}
+            {DeleteDialog}
         </div>
     );
 };

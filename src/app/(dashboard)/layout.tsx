@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { useAuth } from '@/features/auth/use-auth'
 import { redirect } from 'next/navigation'
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient()
 
 const Layout = ({ children }: { children: ReactNode }) => {
     const { isLoading, user } = useAuth();

@@ -17,14 +17,23 @@ import {
     ChevronLeft,
     ChevronRight,
     Search,
+    Pencil,
+    Trash2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { OrderForm } from "./_components/orders-form";
+import { DeleteOrderDialog } from "./_components/delete-orders-dialog";
+import { useQueryClient } from "@tanstack/react-query";
 
 const OrdersPage = () => {
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState<OrderType | undefined>();
+    const queryClient = useQueryClient();
 
     const limit = 10;
 
@@ -37,7 +46,7 @@ const OrdersPage = () => {
     }, [searchTerm]);
 
     const { data, error, isLoading } = useGetTableData<OrderType>({
-        tableName: 'orders',
+        endpoint: 'orders',
         page,
         limit,
         searchTerm: debouncedSearch,
@@ -51,6 +60,8 @@ const OrdersPage = () => {
                 return 'secondary';
             case 'cancelled':
                 return 'destructive';
+            case 'shipped':
+                return 'outline';
             default:
                 return 'outline';
         }
@@ -61,6 +72,14 @@ const OrdersPage = () => {
             style: 'currency',
             currency: 'USD'
         }).format(amount);
+    };
+
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        });
     };
 
     if (error) {
@@ -96,7 +115,7 @@ const OrdersPage = () => {
                 </div>
             )}
 
-            <div className="border shadow-lg rounded-xl overflow-hidden">
+            <div className="border shadow-lg rounded-xl overflow-hidden p-1">
                 {isLoading ? (
                     <div className="p-4 space-y-4">
                         {[...Array(5)].map((_, i) => (
@@ -110,21 +129,22 @@ const OrdersPage = () => {
                                 <TableHead className="w-[100px]">Order ID</TableHead>
                                 <TableHead>User ID</TableHead>
                                 <TableHead className="hidden md:table-cell">Items</TableHead>
-                                <TableHead>Total Amount</TableHead>
-                                <TableHead className="hidden lg:table-cell">Payment Method</TableHead>
+                                <TableHead>Total</TableHead>
+                                <TableHead className="hidden lg:table-cell">Payment</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead>Date</TableHead>
+                                <TableHead>Created</TableHead>
+                                <TableHead>Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {data?.map((order) => (
-                                <TableRow
-                                    key={order.id}
-                                >
-                                    <TableCell className="font-medium">{order.id}</TableCell>
+                                <TableRow key={order.id}>
+                                    <TableCell className="font-medium">#{order.id}</TableCell>
                                     <TableCell>{order.userId}</TableCell>
                                     <TableCell className="hidden md:table-cell">
-                                        <Badge variant="outline">{order.orderItems.length} items</Badge>
+                                        <Badge variant="outline">
+                                            {order.orderItems.length} items
+                                        </Badge>
                                     </TableCell>
                                     <TableCell>{formatCurrency(order.totalAmount)}</TableCell>
                                     <TableCell className="hidden lg:table-cell capitalize">
@@ -136,7 +156,32 @@ const OrdersPage = () => {
                                         </Badge>
                                     </TableCell>
                                     <TableCell>
-                                        {new Date(order.createdAt).toLocaleDateString()}
+                                        {formatDate(order.createdAt)}
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={() => {
+                                                    setSelectedOrder(order);
+                                                    setIsFormOpen(true);
+                                                }}
+                                            >
+                                                <Pencil className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="text-destructive hover:text-destructive"
+                                                onClick={() => {
+                                                    setSelectedOrder(order);
+                                                    setIsDeleteDialogOpen(true);
+                                                }}
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -146,7 +191,7 @@ const OrdersPage = () => {
 
                 <div className="flex items-center justify-between px-4 py-4 border-t">
                     <div className="text-sm text-gray-500">
-                        Showing page {page}
+                        Showing page {page} of {data?.length === limit ? 'many' : data?.length}
                     </div>
                     <div className="flex gap-2">
                         <Button
@@ -161,13 +206,29 @@ const OrdersPage = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => setPage(p => p + 1)}
-                            disabled={data?.length != limit}
+                            disabled={data?.length !== limit}
                         >
                             <ChevronRight className="h-4 w-4" />
                         </Button>
                     </div>
                 </div>
             </div>
+
+            <OrderForm
+                order={selectedOrder}
+                isOpen={isFormOpen}
+                onClose={() => setIsFormOpen(false)}
+                onSuccess={() => queryClient.invalidateQueries({ queryKey: ['orders'] })}
+            />
+
+            {selectedOrder && (
+                <DeleteOrderDialog
+                    order={selectedOrder}
+                    isOpen={isDeleteDialogOpen}
+                    onClose={() => setIsDeleteDialogOpen(false)}
+                    onSuccess={() => queryClient.invalidateQueries({ queryKey: ['orders'] })}
+                />
+            )}
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import CategoryCard from "@/components/category-card";
 import { Button } from "@/components/ui/button";
 import { apiUnauth } from "@/lib/api";
-import { CategoryBtoType } from "@/types/category-type"
+import { CategoryDtoType } from "@/types/category-type"
 import { Metadata } from "next";
 import Link from "next/link";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -17,12 +17,12 @@ export const metadata: Metadata = {
     },
 };
 
-const getCategories = async (page: number = 1, limit: number = 10): Promise<CategoryBtoType[]> => {
+const getCategories = async (page: number = 1, limit: number = 10): Promise<CategoryDtoType[]> => {
     try {
         limit = limit > 50 ? 50 : limit;
         const apiEndPint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/categories/top?page=${page}&limit=${limit}`;
         const response = await apiUnauth.get(apiEndPint);
-        const categories = (response.data as CategoryBtoType[]).map((category) => ({
+        const categories = (response.data as CategoryDtoType[]).map((category) => ({
             ...category,
             imageUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}${category.imageUrl}`
         }));
@@ -41,7 +41,7 @@ async function page({ searchParams }: Props) {
     const params = await Promise.resolve(searchParams);
     const pageParam = Number(params?.["page"]) || 1;
     const limitParam = Number(params?.["limit"]) || 20;
-    const categories: CategoryBtoType[] = await getCategories(pageParam, limitParam);
+    const categories: CategoryDtoType[] = await getCategories(pageParam, limitParam);
 
     return (
         <div className="mt-16">

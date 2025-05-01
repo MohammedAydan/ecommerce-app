@@ -1,16 +1,16 @@
 import Link from "next/link";
 import CategoryCard from "./category-card";
 import { Button } from "./ui/button";
-import { CategoryBtoType } from "@/types/category-type";
+import { CategoryDtoType } from "@/types/category-type";
 import { apiUnauth } from "@/lib/api";
 
-const getCategories = async (page: number = 1, limit: number = 8): Promise<CategoryBtoType[]> => {
+const getCategories = async (page: number = 1, limit: number = 8): Promise<CategoryDtoType[]> => {
     try {
         const apiEndPint = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/v1/categories/top?page${page}&limit=${limit}`;
         const response = await apiUnauth.get(apiEndPint);
         console.log(response)
         console.log(response.data)
-        const categories = (response.data as CategoryBtoType[]).map((category) => ({
+        const categories = (response.data as CategoryDtoType[]).map((category) => ({
             ...category,
             imageUrl: `${process.env.NEXT_PUBLIC_API_BASE_URL}${category.imageUrl}`
         }));
@@ -22,7 +22,7 @@ const getCategories = async (page: number = 1, limit: number = 8): Promise<Categ
 }
 
 const CategorySection = async () => {
-    const categories: CategoryBtoType[] = await getCategories();
+    const categories: CategoryDtoType[] = await getCategories();
 
     return (
         <div id="categories" className="flex justify-center w-full px-4 sm:px-6 lg:px-8">

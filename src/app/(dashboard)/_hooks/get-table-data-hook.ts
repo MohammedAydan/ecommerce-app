@@ -3,7 +3,7 @@ import { getAccessToken } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
 
 interface QueryParams {
-    tableName: string;
+    endpoint: string;
     page?: number;
     limit?: number;
     searchTerm?: string;
@@ -13,7 +13,7 @@ interface QueryParams {
 }
 
 export const useGetTableData = <T>({
-    tableName,
+    endpoint,
     page = 1,
     limit = 20,
     searchTerm = '',
@@ -22,7 +22,7 @@ export const useGetTableData = <T>({
     filters = {}
 }: QueryParams) => {
     const { data, error, isLoading } = useQuery<T[]>({
-        queryKey: [tableName, page, limit, searchTerm, sortBy, ascending, filters],
+        queryKey: [endpoint, page, limit, searchTerm, sortBy, ascending, filters],
         queryFn: async () => {
             const params = new URLSearchParams({
                 page: page.toString(),
@@ -35,7 +35,7 @@ export const useGetTableData = <T>({
                 )
             });
 
-            const url = `${apiBaseUrl}/api/v1/${tableName}?${params.toString()}`;
+            const url = `${apiBaseUrl}/api/v1/${endpoint}?${params.toString()}`;
 
             const accessToken = getAccessToken();
 

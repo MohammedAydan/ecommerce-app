@@ -19,15 +19,38 @@ import {
     ChevronLeft,
     ChevronRight,
     Search,
-    Plus
+    Pencil,
+    Trash2
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { UserForm } from "./_components/user-form";
+import { DeleteUserDialog } from "./_components/delete-user-dialog";
 
 const UsersPage = () => {
     const [page, setPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState<UserType | undefined>();
+
+    // Add form and delete dialog components
+    const UserFormDialog = (
+        <UserForm
+            user={selectedUser}
+            open={isFormOpen}
+            onOpenChange={setIsFormOpen}
+        />
+    );
+
+    const DeleteDialog = selectedUser && (
+        <DeleteUserDialog
+            user={selectedUser}
+            open={isDeleteDialogOpen}
+            onOpenChange={setIsDeleteDialogOpen}
+        />
+    );
 
     const limit = 10;
 
@@ -40,7 +63,7 @@ const UsersPage = () => {
     }, [searchTerm]);
 
     const { data, error, isLoading } = useGetTableData<UserType>({
-        tableName: 'user/all',
+        endpoint: "user/all",
         page,
         limit,
         searchTerm: debouncedSearch,
@@ -70,10 +93,16 @@ const UsersPage = () => {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                     </div>
-                    <Button className="whitespace-nowrap">
+                    {/* <Button
+                        className="whitespace-nowrap"
+                        onClick={() => {
+                            setSelectedUser(undefined);
+                            setIsFormOpen(true);
+                        }}
+                    >
                         <Plus className="h-4 w-4 mr-2" />
                         Add User
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
 
@@ -83,7 +112,7 @@ const UsersPage = () => {
                 </div>
             )}
 
-            <div className="border shadow-lg rounded-xl overflow-hidden">
+            <div className="border shadow-lg rounded-xl overflow-hidden p-1">
                 {isLoading ? (
                     <div className="p-4 space-y-4">
                         {[...Array(5)].map((_, i) => (
@@ -101,20 +130,19 @@ const UsersPage = () => {
                                 <TableHead>Phone</TableHead>
                                 <TableHead>Roles</TableHead>
                                 <TableHead>Last Sign In</TableHead>
+                                <TableHead>Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {data?.map((user) => (
-                                <TableRow
-                                    key={user.id}
-                                >
+                                <TableRow key={user.id}>
                                     <TableCell className="font-medium">{user.id}</TableCell>
                                     <TableCell>
                                         <div className="flex items-center gap-3">
                                             {user.imageUrl && (
                                                 <div className="relative w-8 h-8 rounded-full overflow-hidden">
                                                     <Image
-                                                        src={apiBaseUrl + "/" + user.imageUrl}
+                                                        src={`${apiBaseUrl}/${user.imageUrl}`}
                                                         alt={user.userName}
                                                         fill
                                                         className="object-cover"
@@ -124,22 +152,55 @@ const UsersPage = () => {
                                             <span className="font-semibold">{user.userName}</span>
                                         </div>
                                     </TableCell>
-                                    <TableCell className="hidden md:table-cell">{user.email}</TableCell>
+                                    <TableCell className="hidden md:table-cell">
+                                        {user.email}
+                                    </TableCell>
                                     <TableCell className="hidden lg:table-cell">
                                         {user.city}, {user.country}
                                     </TableCell>
-                                    <TableCell>{user.phoneNumber || '-'}</TableCell>
+                                    <TableCell>{user.phoneNumber || "-"}</TableCell>
                                     <TableCell>
                                         <div className="flex gap-1 flex-wrap">
                                             {user.roles?.map((role, index) => (
-                                                <Badge key={index} variant="secondary" className="capitalize">
+                                                <Badge
+                                                    key={index}
+                                                    variant="secondary"
+                                                    className="capitalize"
+                                                >
                                                     {role.toLowerCase()}
                                                 </Badge>
                                             ))}
                                         </div>
                                     </TableCell>
                                     <TableCell>
-                                        {user.lastSignIn ? new Date(user.lastSignIn).toLocaleDateString() : '-'}
+                                        {user.lastSignIn
+                                            ? new Date(user.lastSignIn).toLocaleDateString()
+                                            : "-"}
+                                    </TableCell>
+                                    <TableCell>
+                                        <div className="flex items-center gap-2">
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                onClick={() => {
+                                                    setSelectedUser(user);
+                                                    setIsFormOpen(true);
+                                                }}
+                                            >
+                                                <Pencil className="h-4 w-4" />
+                                            </Button>
+                                            <Button
+                                                variant="ghost"
+                                                size="icon"
+                                                className="text-destructive hover:text-destructive"
+                                                onClick={() => {
+                                                    setSelectedUser(user);
+                                                    setIsDeleteDialogOpen(true);
+                                                }}
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -164,13 +225,15 @@ const UsersPage = () => {
                             variant="outline"
                             size="sm"
                             onClick={() => setPage(p => p + 1)}
-                            disabled={data?.length != limit}
+                            disabled={data?.length !== limit}
                         >
                             <ChevronRight className="h-4 w-4" />
                         </Button>
                     </div>
                 </div>
             </div>
+            {UserFormDialog}
+            {DeleteDialog}
         </div>
     );
 };

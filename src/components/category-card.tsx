@@ -1,9 +1,9 @@
-import { CategoryBtoType } from "@/types/category-type"
+import { CategoryDtoType } from "@/types/category-type"
 import Image from "next/image"
 import Link from "next/link"
 
 interface CategoryCardProps {
-  category: CategoryBtoType
+  category: CategoryDtoType
 }
 
 const CategoryCard = ({ category }: CategoryCardProps) => {
