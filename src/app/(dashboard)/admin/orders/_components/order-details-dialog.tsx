@@ -1,3 +1,5 @@
+// order details dialog component
+"use client";
 import {
     Dialog,
     DialogContent,
@@ -321,7 +323,7 @@ export const OrderDetailsDialog = ({
             // printWindow.onafterprint = () => printWindow.close();
         };
     };
-
+    
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
