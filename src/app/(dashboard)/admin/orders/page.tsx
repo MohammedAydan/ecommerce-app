@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { OrderForm } from "./_components/orders-form";
 import { DeleteOrderDialog } from "./_components/delete-orders-dialog";
+import { OrderDetailsDialog } from "./_components/order-details-dialog"; // Import the new component
 import { useQueryClient } from "@tanstack/react-query";
 
 const OrdersPage = () => {
@@ -33,6 +34,10 @@ const OrdersPage = () => {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState<OrderType | undefined>();
+    // New state for order details dialog
+    const [isDetailsDialogOpen, setIsDetailsDialogOpen] = useState(false);
+    const [orderInDetails, setOrderInDetails] = useState<OrderType | undefined>();
+
     const queryClient = useQueryClient();
 
     const limit = 10;
@@ -140,7 +145,14 @@ const OrdersPage = () => {
                         </TableHeader>
                         <TableBody>
                             {data?.map((order) => (
-                                <TableRow key={order.id}>
+                                <TableRow
+                                    key={order.id}
+                                    onClick={() => { // Add onClick to TableRow
+                                        setOrderInDetails(order);
+                                        setIsDetailsDialogOpen(true);
+                                    }}
+                                    className="cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800" // Add hover styles
+                                >
                                     <TableCell className="font-medium">#{order.id}</TableCell>
                                     <TableCell>{order.userId}</TableCell>
                                     <TableCell className="hidden md:table-cell">
@@ -165,7 +177,8 @@ const OrdersPage = () => {
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                onClick={() => {
+                                                onClick={(e) => {
+                                                    e.stopPropagation(); // Prevent row click from firing
                                                     setSelectedOrder(order);
                                                     setIsFormOpen(true);
                                                 }}
@@ -176,7 +189,8 @@ const OrdersPage = () => {
                                                 variant="ghost"
                                                 size="icon"
                                                 className="text-destructive hover:text-destructive"
-                                                onClick={() => {
+                                                onClick={(e) => {
+                                                    e.stopPropagation(); // Prevent row click from firing
                                                     setSelectedOrder(order);
                                                     setIsDeleteDialogOpen(true);
                                                 }}
@@ -231,6 +245,13 @@ const OrdersPage = () => {
                     onSuccess={() => queryClient.invalidateQueries({ queryKey: ['orders'] })}
                 />
             )}
+
+            {/* Render the new OrderDetailsDialog */}
+            <OrderDetailsDialog
+                order={orderInDetails}
+                isOpen={isDetailsDialogOpen}
+                onClose={() => setIsDetailsDialogOpen(false)}
+            />
         </div>
     );
 };
