@@ -51,6 +51,8 @@ const CategoriesPage = () => {
         page,
         limit,
         searchTerm: debouncedSearch,
+        ascending: false,
+        sortBy: 'CreatedAt',
     });
 
 

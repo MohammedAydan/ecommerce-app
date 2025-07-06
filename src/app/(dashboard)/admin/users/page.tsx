@@ -67,6 +67,8 @@ const UsersPage = () => {
         page,
         limit,
         searchTerm: debouncedSearch,
+        ascending: false,
+        sortBy: 'CreatedAt',
     });
 
     if (error) {

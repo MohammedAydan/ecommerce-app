@@ -50,6 +50,8 @@ const OrdersPage = () => {
         page,
         limit,
         searchTerm: debouncedSearch,
+        ascending: false,
+        sortBy: 'CreatedAt',
     });
 
     const getStatusBadgeVariant = (status: string) => {
