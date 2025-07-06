@@ -8,4 +8,6 @@ export default interface OrderItemType {
     product: ProductDtoType;
     price: number;
     orderId: string;
+    createdAt: string;
+    updatedAt: string;
 }

@@ -31,6 +31,8 @@ export interface ProductDtoType {
     discount: number | null;
     salePrice: number | null;
     rating: number | null;
+    cartAddedCount: number | null;
+    createdOrderCount: number | null;
 }
 
 export default interface ProductType extends ProductDtoType {

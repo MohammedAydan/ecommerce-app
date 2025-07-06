@@ -68,7 +68,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                                 />
                             ))}
                         </div>
-                        <span className="text-foreground/60">({0} reviews)</span>
+                        {/* <span className="text-foreground/60">({0} reviews)</span> */}
                     </div>
 
                     <div className="text-2xl font-bold text-foreground flex justify-start items-center gap-2">
