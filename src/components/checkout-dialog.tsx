@@ -84,8 +84,8 @@ export function CheckoutDialog({ disableButton }: { disableButton: boolean }) {
                     // Clear cart before redirecting
                     clearCart();
                     // Redirect to payment gateway
-                    router.push(redirectUrl);
-                    // window.location.href = redirectUrl;
+                    // router.push(redirectUrl);
+                    window.location.href = redirectUrl;
                     return;
                 } else {
                     setError("Payment gateway URL not found");
