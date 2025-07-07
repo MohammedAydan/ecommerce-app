@@ -30,7 +30,7 @@ export default function PaymentPending() {
                         Payment Pending
                     </CardTitle>
                     <p className="text-gray-500 text-lg font-light">
-                        We're verifying your payment. This may take a few minutes.
+                        We&apos;re verifying your payment. This may take a few minutes.
                     </p>
                 </div>
 

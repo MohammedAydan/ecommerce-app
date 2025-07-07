@@ -30,7 +30,7 @@ export default function PaymentFailed() {
                         Payment Failed
                     </CardTitle>
                     <p className="text-gray-500 text-lg font-light">
-                        We couldn't process your payment. Please try again.
+                        We couldn&apos;t process your payment. Please try again.
                     </p>
                 </div>
 
