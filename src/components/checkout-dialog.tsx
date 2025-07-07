@@ -26,10 +26,13 @@ import { useAuth } from "@/features/auth/use-auth"
 import { useCart } from "@/features/cart/use-cart"
 import { toast } from "sonner"
 import Link from "next/link"
+import apiClient from "@/lib/api"
+import { useRouter } from "next/navigation"
 
 export function CheckoutDialog({ disableButton }: { disableButton: boolean }) {
     const { user } = useAuth()
     const { clearCart, shipping } = useCart();
+    const router = useRouter();
     const [paymentMethod, setPaymentMethod] = useState("")
     const [shippingAddress, setShippingAddress] = useState("")
     const [errors, setErrors] = useState<{ shippingAddress?: string; paymentMethod?: string }>({})
@@ -63,22 +66,53 @@ export function CheckoutDialog({ disableButton }: { disableButton: boolean }) {
 
         try {
             setLoading(true)
-            const response = await createCheckout({ shippingAddress, paymentMethod, shippingPrice: shipping })
+            
+            if (paymentMethod === "Card") {
+                const response = await apiClient.post("/payment/invoiceInitPay", {
+                    paymentMethod: "2",
+                    shippingAddress: shippingAddress,
+                    shippingPrice: shipping,
+                });
 
-            if (!response) {
-                setError("Something went wrong. Please try again.")
-                return
+                if (!response.data?.success) {
+                    setError(response.data?.message || "Something went wrong. Please try again.")
+                    return
+                }
+
+                const redirectUrl = response.data?.data?.payment_data?.redirectTo;
+                if (redirectUrl) {
+                    // Clear cart before redirecting
+                    clearCart();
+                    // Redirect to payment gateway
+                    router.push(redirectUrl);
+                    // window.location.href = redirectUrl;
+                    return;
+                } else {
+                    setError("Payment gateway URL not found");
+                    return;
+                }
+            } else {
+                const response = await createCheckout({ 
+                    shippingAddress, 
+                    paymentMethod, 
+                    shippingPrice: shipping 
+                });
+
+                if (!response) {
+                    setError("Something went wrong. Please try again.")
+                    return
+                }
+
+                setCheckoutRes(response)
+                setShippingAddress(user?.address ?? "")
+                setPaymentMethod("")
+                setErrors({})
+                clearCart();
+                toast.success("Order placed successfully!");
             }
-
-            setCheckoutRes(response)
-            setShippingAddress(user?.address ?? "")
-            setPaymentMethod("")
-            setErrors({})
-            clearCart();
-            toast.success("Order placed successfully!");
         } catch (err) {
             console.error(err)
-            setError("An unexpected error occurred.")
+            setError(err?.toString() || "An unexpected error occurred.")
         } finally {
             setLoading(false)
         }
@@ -135,13 +169,14 @@ export function CheckoutDialog({ disableButton }: { disableButton: boolean }) {
                                 </Label>
                                 <div className="col-span-3">
                                     <Select
-                                        onValueChange={setPaymentMethod}
+                                        onValueChange={(value) => setPaymentMethod(value)}
                                         value={paymentMethod}
                                     >
                                         <SelectTrigger id="payment-method" className="w-full">
                                             <SelectValue placeholder="Select payment method" />
                                         </SelectTrigger>
                                         <SelectContent>
+                                            <SelectItem value="Card">Card</SelectItem>
                                             <SelectItem value="CashOnDelivery">Cash on delivery</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -172,7 +207,7 @@ export function CheckoutDialog({ disableButton }: { disableButton: boolean }) {
 
                         <DialogFooter>
                             <Button type="submit" disabled={loading}>
-                                {loading ? "Placing Order..." : "Place Order"}
+                                {loading ? "Processing..." : "Place Order"}
                             </Button>
                         </DialogFooter>
                     </form>
