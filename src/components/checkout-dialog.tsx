@@ -27,7 +27,8 @@ import { useCart } from "@/features/cart/use-cart"
 import { toast } from "sonner"
 import Link from "next/link"
 import apiClient from "@/lib/api"
-import { redirect, useRouter } from "next/navigation"
+import { useRouter } from "next/router"
+// import { useRouter } from "next/navigation"
 
 export function CheckoutDialog({ disableButton }: { disableButton: boolean }) {
     const { user } = useAuth()
@@ -84,8 +85,7 @@ export function CheckoutDialog({ disableButton }: { disableButton: boolean }) {
                     // Clear cart before redirecting
                     clearCart();
                     // Redirect to payment gateway
-                    // router.push(redirectUrl);
-                    redirect(redirectUrl);
+                    window.location.assign(redirectUrl);
                     return;
                 } else {
                     setError("Payment gateway URL not found");
