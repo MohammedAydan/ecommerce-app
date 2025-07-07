@@ -27,13 +27,10 @@ import { useCart } from "@/features/cart/use-cart"
 import { toast } from "sonner"
 import Link from "next/link"
 import apiClient from "@/lib/api"
-import { useRouter } from "next/router"
-// import { useRouter } from "next/navigation"
 
 export function CheckoutDialog({ disableButton }: { disableButton: boolean }) {
     const { user } = useAuth()
     const { clearCart, shipping } = useCart();
-    const router = useRouter();
     const [paymentMethod, setPaymentMethod] = useState("")
     const [shippingAddress, setShippingAddress] = useState("")
     const [errors, setErrors] = useState<{ shippingAddress?: string; paymentMethod?: string }>({})
