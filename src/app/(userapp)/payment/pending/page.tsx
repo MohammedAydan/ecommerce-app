@@ -1,5 +1,5 @@
 "use client"
-import { Clock, Home, RefreshCw, CreditCard, ShoppingBag } from "lucide-react";
+import { Clock, Home, ShoppingBag } from "lucide-react";
 import { CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -7,11 +7,6 @@ import { useRouter } from "next/navigation";
 
 export default function PaymentPending() {
     const router = useRouter();
-
-    const handleRefresh = () => {
-        // Add any additional refresh logic here before reloading
-        window.location.reload();
-    };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">

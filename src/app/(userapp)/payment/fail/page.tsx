@@ -1,5 +1,5 @@
 "use client"
-import { XCircle, Home, CreditCard } from "lucide-react";
+import { XCircle, Home } from "lucide-react";
 import { CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -57,13 +57,6 @@ export default function PaymentFailed() {
                     transition={{ delay: 0.4 }}
                     className="pt-6 w-full space-y-3"
                 >
-                    {/* <Button
-                        onClick={() => router.push('/checkout')}
-                        className="w-full max-w-xs bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white shadow-md transition-all duration-300"
-                    >
-                        <CreditCard className="mr-2 h-4 w-4" />
-                        Try Payment Again
-                    </Button> */}
                     <Button
                         variant="outline"
                         onClick={() => router.push('/')}
