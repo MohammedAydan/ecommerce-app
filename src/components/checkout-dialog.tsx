@@ -72,10 +72,10 @@ export function CheckoutDialog({ disableButton }: { disableButton: boolean }) {
                     shippingPrice: shipping,
                 });
 
-                if (!response.data?.success) {
-                    setError(response.data?.message || "Something went wrong. Please try again.")
-                    return
-                }
+                // if (!response.data?.success) {
+                //     setError(response.data?.message || "Something went wrong. Please try again.")
+                //     return
+                // }
 
                 const redirectUrl = response.data?.data?.payment_data?.redirectTo;
                 if (redirectUrl) {
