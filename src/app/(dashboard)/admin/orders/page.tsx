@@ -139,6 +139,7 @@ const OrdersPage = () => {
                                 <TableHead>Total</TableHead>
                                 <TableHead className="hidden lg:table-cell">Payment</TableHead>
                                 <TableHead>Status</TableHead>
+                                <TableHead>Payment Status</TableHead>
                                 <TableHead>Created</TableHead>
                                 <TableHead>Actions</TableHead>
                             </TableRow>
@@ -168,6 +169,9 @@ const OrdersPage = () => {
                                         <Badge variant={getStatusBadgeVariant(order.status)} className="capitalize">
                                             {order.status.toLowerCase()}
                                         </Badge>
+                                    </TableCell>
+                                    <TableCell>
+                                        {order.paymentStatus}
                                     </TableCell>
                                     <TableCell>
                                         {formatDate(order.createdAt)}

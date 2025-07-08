@@ -9,6 +9,12 @@ export default interface OrderType {
     shippingAddress: string;
     shippingPrice: number;
     status: string;
+
+    paymentStatus: string;
+    invoiceId: string;
+    invoiceKey: string;
+    referenceNumber: string;
+
     createdAt: string;
     updatedAt: string;
 }
@@ -20,4 +26,8 @@ export interface OrderDtoType {
     shippingAddress: string;
     shippingPrice: number;
     status: string;
+    paymentStatus: string;
+    invoiceId: string;
+    invoiceKey: string;
+    referenceNumber: string;
 }

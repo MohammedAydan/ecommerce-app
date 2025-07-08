@@ -191,6 +191,8 @@ export const OrderDetailsDialog = ({
                             <p><span class="font-semibold">User ID:</span> ${orderData.userId}</p>
                             <p><span class="font-semibold">Payment Method:</span> <span class="capitalize">${orderData.paymentMethod.toLowerCase()}</span></p>
                             <p><span class="font-semibold">Status:</span> <span class="capitalize">${orderData.status.toLowerCase()}</span></p>
+                            <p><span class="font-semibold">Invoice Id:</span> <span class="capitalize">${orderData.invoiceId}</span></p>
+                            <p><span class="font-semibold">Payment Status:</span> <span class="capitalize">${orderData.paymentStatus.toLowerCase()}</span></p>
                         </div>
                         <div>
                             <p><span class="font-semibold">Created At:</span> ${formatDateTime(orderData.createdAt)}</p>
@@ -214,7 +216,7 @@ export const OrderDetailsDialog = ({
 
                 <div class="text-center mt-12 text-gray-500 text-sm">
                     <p>Thank you for your order!</p>
-                    <p>For support, please contact us at mohammedaydan@gmail.com</p>
+                    <p>For support, please contact us at mohammedaydan12@gmail.com</p>
                 </div>
             </div>
         `;
@@ -323,7 +325,7 @@ export const OrderDetailsDialog = ({
             // printWindow.onafterprint = () => printWindow.close();
         };
     };
-    
+
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
@@ -408,6 +410,17 @@ export const OrderDetailsDialog = ({
                             <Badge variant={getStatusBadgeVariant(displayOrder.status)} className="capitalize w-fit">
                                 {displayOrder.status.toLowerCase()}
                             </Badge>
+                        </div>
+                        <div className="grid grid-cols-2 items-center gap-4">
+                            <p className="text-sm font-medium text-gray-500">Invoice Id:</p>
+                            <p className="text-sm font-semibold">{displayOrder.invoiceId}</p>
+                        </div><div className="grid grid-cols-2 items-center gap-4">
+                            <p className="text-sm font-medium text-gray-500">Invoice Key:</p>
+                            <p className="text-sm font-semibold">{displayOrder.invoiceKey}</p>
+                        </div>
+                        <div className="grid grid-cols-2 items-center gap-4">
+                            <p className="text-sm font-medium text-gray-500">Payment Status:</p>
+                            <p className="text-sm font-semibold">{displayOrder.paymentStatus.toLowerCase()}</p>
                         </div>
                         <div className="grid grid-cols-2 items-center gap-4">
                             <p className="text-sm font-medium text-gray-500">Payment Method:</p>

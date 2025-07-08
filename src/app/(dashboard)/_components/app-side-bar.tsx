@@ -49,6 +49,11 @@ const items = [
     url: "/admin/orders",
     icon: ShoppingCartIcon,
   },
+  {
+    title: "Settings",
+    url: "/admin/settings/apisettings",
+    icon: Settings2Icon,
+  }
 ]
 
 export default function AppSidebar() {
