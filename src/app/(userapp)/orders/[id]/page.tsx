@@ -11,6 +11,8 @@ import OrderType from "@/types/order-type";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 
+type VariantType = "default" | "secondary" | "destructive" | "outline" | null | undefined;
+
 export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter();
   const [order, setOrder] = useState<OrderType | null>(null);
@@ -159,10 +161,10 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
               <div className="flex justify-between items-center">
                 <CardTitle>Order #{order.id}</CardTitle>
                 <div className="flex gap-2">
-                  <Badge variant={statusDetails.variant as any}>
+                  <Badge variant={statusDetails.variant as VariantType}>
                     {order.status}
                   </Badge>
-                  <Badge variant={paymentStatusDetails.variant as any}>
+                  <Badge variant={paymentStatusDetails.variant as VariantType}>
                     {order.paymentStatus}
                   </Badge>
                 </div>
@@ -295,7 +297,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
               <div>
                 <p className="text-sm text-muted-foreground">Payment Status</p>
                 <p className="font-medium">
-                  <Badge variant={paymentStatusDetails.variant as any}>
+                  <Badge variant={paymentStatusDetails.variant as VariantType}>
                     {order.paymentStatus}
                   </Badge>
                 </p>

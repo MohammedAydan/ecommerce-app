@@ -6,6 +6,8 @@ import OrderType from "@/types/order-type";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
 import { Progress } from "./ui/progress";
 
+type VariantType = "default" | "secondary" | "destructive" | "outline" | null | undefined;
+
 interface OrderCardProps {
   order: OrderType;
   formatDate: (date: string) => string;
@@ -62,10 +64,10 @@ const OrderCard = ({ order, formatDate, formatCurrency }: OrderCardProps) => {
               Order #{order.id}
             </CardTitle>
             <div className="flex items-center gap-2">
-              <Badge variant={statusDetails.variant as any}>
+              <Badge variant={statusDetails.variant as VariantType}>
                 {order.status}
               </Badge>
-              <Badge variant={paymentStatusDetails.variant as any}>
+              <Badge variant={paymentStatusDetails.variant as VariantType}>
                 {order.paymentStatus}
               </Badge>
             </div>
