@@ -192,7 +192,7 @@ export const OrderDetailsDialog = ({
                             <p><span class="font-semibold">Payment Method:</span> <span class="capitalize">${orderData.paymentMethod.toLowerCase()}</span></p>
                             <p><span class="font-semibold">Status:</span> <span class="capitalize">${orderData.status.toLowerCase()}</span></p>
                             <p><span class="font-semibold">Invoice Id:</span> <span class="capitalize">${orderData.invoiceId}</span></p>
-                            <p><span class="font-semibold">Payment Status:</span> <span class="capitalize">${orderData.paymentStatus.toLowerCase()}</span></p>
+                            <p><span class="font-semibold">Payment Status:</span> <span class="capitalize">${orderData?.paymentStatus?.toLowerCase()}</span></p>
                         </div>
                         <div>
                             <p><span class="font-semibold">Created At:</span> ${formatDateTime(orderData.createdAt)}</p>
@@ -420,11 +420,11 @@ export const OrderDetailsDialog = ({
                         </div>
                         <div className="grid grid-cols-2 items-center gap-4">
                             <p className="text-sm font-medium text-gray-500">Payment Status:</p>
-                            <p className="text-sm font-semibold">{displayOrder.paymentStatus.toLowerCase()}</p>
+                            <p className="text-sm font-semibold">{displayOrder?.paymentStatus?.toLowerCase()}</p>
                         </div>
                         <div className="grid grid-cols-2 items-center gap-4">
                             <p className="text-sm font-medium text-gray-500">Payment Method:</p>
-                            <p className="text-sm font-semibold capitalize">{displayOrder.paymentMethod.toLowerCase()}</p>
+                            <p className="text-sm font-semibold capitalize">{displayOrder?.paymentMethod?.toLowerCase()}</p>
                         </div>
                         <div className="grid grid-cols-2 items-center gap-4">
                             <p className="text-sm font-medium text-gray-500">Shipping Address:</p>
